@@ -1,0 +1,36 @@
+// UnmanagedIListImpl.idl : IDL source for UnmanagedIListImpl
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (UnmanagedIListImpl.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(94383d87-200e-4fd0-8e93-4ad9d2188c8d),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IMyStringList : IDispatch
+{
+};
+[
+	uuid(28f19030-36fe-4bdf-b71a-1aa1d484b380),
+	version(1.0),
+]
+library UnmanagedIListImplLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(690078d3-9a2c-4bb9-8213-d1fbf2e677a8)
+	]
+	coclass MyStringList
+	{
+		[default] interface IMyStringList;
+	};
+};
+
+import "shobjidl.idl";
