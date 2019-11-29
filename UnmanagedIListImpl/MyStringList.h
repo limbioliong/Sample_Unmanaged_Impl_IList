@@ -68,7 +68,7 @@ public:
 		/*[out,retval]*/ VARIANT * pRetVal
 	)
 	{
-		if ((index < 0) || (index > myStringList.size()))
+		if ((index < 0) || (index > (long)(myStringList.size())))
 		{
 			// See :
 			// ArgumentOutOfRangeException Class
@@ -97,7 +97,7 @@ public:
 		/*[in]*/ VARIANT pRetVal
 	)
 	{
-		if ((index < 0) || (index > myStringList.size()))
+		if ((index < 0) || (index > (long)(myStringList.size())))
 		{
 			// See :
 			// ArgumentOutOfRangeException Class
@@ -240,7 +240,7 @@ public:
 	{
 		USES_CONVERSION;
 
-		if ((index < 0) || (index > myStringList.size()))
+		if ((index < 0) || (index > (long)(myStringList.size())))
 		{
 			// See :
 			// ArgumentOutOfRangeException Class
@@ -367,7 +367,7 @@ public:
 		// Initialize receiver.
 		*pCeltFetched = 0;
 
-		if (m_iElementsFetched >= myStringList.size())
+		if (m_iElementsFetched >= (ULONG)(myStringList.size()))
 		{
 			// Reset m_iElementsFetched to 0
 			// so that we can start again.
@@ -375,8 +375,7 @@ public:
 			return S_FALSE;
 		}
 
-		int i = 0;
-
+		ULONG i = 0;
 		for (i = 0; i < celt; i++)
 		{
 			if (m_iElementsFetched + i >= myStringList.size())
@@ -447,7 +446,7 @@ public:
 
 private:
 	vector<string> myStringList;
-	int m_iElementsFetched;
+	ULONG m_iElementsFetched;
 
 	void MySetErrorInfo(LPCTSTR lpszDescription)
 	{
