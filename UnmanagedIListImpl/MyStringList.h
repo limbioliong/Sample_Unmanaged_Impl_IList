@@ -82,7 +82,7 @@ public:
 
 		USES_CONVERSION;
 
-		VariantClear(pRetVal);
+		VariantInit(pRetVal);
 
 		string str = myStringList[index];
 		V_VT(pRetVal) = VT_BSTR;
@@ -364,8 +364,13 @@ public:
 	{
 		USES_CONVERSION;
 
+		// Initialize receiver.
+		*pCeltFetched = 0;
+
 		if (m_iElementsFetched >= myStringList.size())
 		{
+			// Reset m_iElementsFetched to 0
+			// so that we can start again.
 			m_iElementsFetched = 0;
 			return S_FALSE;
 		}
@@ -374,13 +379,18 @@ public:
 
 		for (i = 0; i < celt; i++)
 		{
-			VariantClear(&(rgVar[i]));
+			if (m_iElementsFetched + i >= myStringList.size())
+			{
+				break;
+			}
+
+			VariantInit(&(rgVar[i]));
 			V_VT(&(rgVar[i])) = VT_BSTR;
 			V_BSTR(&(rgVar[i])) = ::SysAllocString(A2W(myStringList[m_iElementsFetched + i].c_str()));
 		}
 
-		*pCeltFetched = celt;
-		m_iElementsFetched += celt;
+		*pCeltFetched = i;
+		m_iElementsFetched += i;
 
 		return S_OK;
 	}
@@ -390,11 +400,26 @@ public:
 		/* [in] */ ULONG celt
 	)
 	{
-		return S_OK;
+		int iTemp = celt;
+
+		if (m_iElementsFetched + celt >= myStringList.size())
+		{
+			return S_FALSE;
+		}
+		else
+		{
+			m_iElementsFetched += celt;
+
+			return S_OK;
+		}		
 	}
 
 	virtual HRESULT STDMETHODCALLTYPE Reset(void)
 	{
+		// Reset m_iElementsFetched to 0
+		// so that we can start again.
+		m_iElementsFetched = 0;
+
 		return S_OK;
 	}
 
@@ -405,7 +430,19 @@ public:
 	{
 		*ppEnum = NULL;
 
-		return S_OK;
+		HRESULT hrRetTemp = CMyStringList::CreateInstance(ppEnum);
+
+		if (SUCCEEDED(hrRetTemp))
+		{
+			CMyStringList* pCMyStringList = static_cast<CMyStringList*>(*ppEnum);
+			pCMyStringList->myStringList = myStringList;
+			pCMyStringList->m_iElementsFetched = m_iElementsFetched;
+			return S_OK;
+		}
+		else
+		{
+			return E_OUTOFMEMORY;
+		}		
 	}
 
 private:
