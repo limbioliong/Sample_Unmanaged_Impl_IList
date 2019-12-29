@@ -1,16 +1,16 @@
-// MyStringList.cpp : Implementation of CMyStringList
+// MyObjectList.cpp : Implementation of CMyObjectList
 
 #include "stdafx.h"
-#include "MyStringList.h"
+#include "MyObjectList.h"
 
 
-// CMyStringList
+// CMyObjectList
 
-STDMETHODIMP CMyStringList::InterfaceSupportsErrorInfo(REFIID riid)
+STDMETHODIMP CMyObjectList::InterfaceSupportsErrorInfo(REFIID riid)
 {
 	static const IID* const arr[] = 
 	{
-		&IID_IMyStringList,
+		&IID_IMyObjectList,
 		&__uuidof(IList), 
 		&__uuidof(IEnumerable),
 		&__uuidof(ICollection),

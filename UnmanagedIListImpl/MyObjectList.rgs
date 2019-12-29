@@ -1,0 +1,26 @@
+HKCR
+{
+	UnmanagedIListImpl.MyObjectList.1 = s 'MyObjectList class'
+	{
+		CLSID = s '{550cdb65-7ad2-4491-9474-21b31e29800b}'
+	}
+	UnmanagedIListImpl.MyObjectList = s 'MyObjectList class'
+	{		
+		CurVer = s 'UnmanagedIListImpl.MyObjectList.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {550cdb65-7ad2-4491-9474-21b31e29800b} = s 'MyObjectList class'
+		{
+			ProgID = s 'UnmanagedIListImpl.MyObjectList.1'
+			VersionIndependentProgID = s 'UnmanagedIListImpl.MyObjectList'
+			ForceRemove Programmable
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			TypeLib = s '{28f19030-36fe-4bdf-b71a-1aa1d484b380}'
+			Version = s '1.0'
+		}
+	}
+}

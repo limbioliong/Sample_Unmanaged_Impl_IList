@@ -37,6 +37,9 @@
     <ClCompile Include="MyStringList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MyObjectList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -60,6 +63,9 @@
     <ClInclude Include="MyStringList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MyObjectList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="UnmanagedIListImpl.rc">
@@ -74,6 +80,9 @@
       <Filter>Source Files</Filter>
     </None>
     <None Include="MyStringList.rgs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="MyObjectList.rgs">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

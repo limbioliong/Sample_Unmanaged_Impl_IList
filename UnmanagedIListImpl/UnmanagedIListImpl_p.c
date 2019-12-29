@@ -89,6 +89,13 @@ extern const MIDL_SERVER_INFO IMyStringList_ServerInfo;
 extern const MIDL_STUBLESS_PROXY_INFO IMyStringList_ProxyInfo;
 
 
+extern const MIDL_STUB_DESC Object_StubDesc;
+
+
+extern const MIDL_SERVER_INFO IMyObjectList_ServerInfo;
+extern const MIDL_STUBLESS_PROXY_INFO IMyObjectList_ProxyInfo;
+
+
 
 #if !defined(__RPC_WIN32__)
 #error  Invalid build platform for this stub.
@@ -194,6 +201,72 @@ CInterfaceStubVtbl _IMyStringListStubVtbl =
     CStdStubBuffer_DELEGATING_METHODS
 };
 
+
+/* Object interface: IMyObjectList, ver. 0.0,
+   GUID={0xbdd1639b,0x1ef3,0x40ac,{0x87,0x04,0x20,0xa9,0x63,0x10,0x1e,0x01}} */
+
+#pragma code_seg(".orpc")
+static const unsigned short IMyObjectList_FormatStringOffsetTable[] =
+    {
+    (unsigned short) -1,
+    (unsigned short) -1,
+    (unsigned short) -1,
+    (unsigned short) -1,
+    0
+    };
+
+static const MIDL_STUBLESS_PROXY_INFO IMyObjectList_ProxyInfo =
+    {
+    &Object_StubDesc,
+    UnmanagedIListImpl__MIDL_ProcFormatString.Format,
+    &IMyObjectList_FormatStringOffsetTable[-3],
+    0,
+    0,
+    0
+    };
+
+
+static const MIDL_SERVER_INFO IMyObjectList_ServerInfo = 
+    {
+    &Object_StubDesc,
+    0,
+    UnmanagedIListImpl__MIDL_ProcFormatString.Format,
+    &IMyObjectList_FormatStringOffsetTable[-3],
+    0,
+    0,
+    0,
+    0};
+CINTERFACE_PROXY_VTABLE(7) _IMyObjectListProxyVtbl = 
+{
+    0,
+    &IID_IMyObjectList,
+    IUnknown_QueryInterface_Proxy,
+    IUnknown_AddRef_Proxy,
+    IUnknown_Release_Proxy ,
+    0 /* IDispatch::GetTypeInfoCount */ ,
+    0 /* IDispatch::GetTypeInfo */ ,
+    0 /* IDispatch::GetIDsOfNames */ ,
+    0 /* IDispatch_Invoke_Proxy */
+};
+
+
+static const PRPC_STUB_FUNCTION IMyObjectList_table[] =
+{
+    STUB_FORWARDING_FUNCTION,
+    STUB_FORWARDING_FUNCTION,
+    STUB_FORWARDING_FUNCTION,
+    STUB_FORWARDING_FUNCTION
+};
+
+CInterfaceStubVtbl _IMyObjectListStubVtbl =
+{
+    &IID_IMyObjectList,
+    &IMyObjectList_ServerInfo,
+    7,
+    &IMyObjectList_table[-3],
+    CStdStubBuffer_DELEGATING_METHODS
+};
+
 static const MIDL_STUB_DESC Object_StubDesc = 
     {
     0,
@@ -221,23 +294,27 @@ static const MIDL_STUB_DESC Object_StubDesc =
 const CInterfaceProxyVtbl * const _UnmanagedIListImpl_ProxyVtblList[] = 
 {
     ( CInterfaceProxyVtbl *) &_IMyStringListProxyVtbl,
+    ( CInterfaceProxyVtbl *) &_IMyObjectListProxyVtbl,
     0
 };
 
 const CInterfaceStubVtbl * const _UnmanagedIListImpl_StubVtblList[] = 
 {
     ( CInterfaceStubVtbl *) &_IMyStringListStubVtbl,
+    ( CInterfaceStubVtbl *) &_IMyObjectListStubVtbl,
     0
 };
 
 PCInterfaceName const _UnmanagedIListImpl_InterfaceNamesList[] = 
 {
     "IMyStringList",
+    "IMyObjectList",
     0
 };
 
 const IID *  const _UnmanagedIListImpl_BaseIIDList[] = 
 {
+    &IID_IDispatch,
     &IID_IDispatch,
     0
 };
@@ -247,14 +324,11 @@ const IID *  const _UnmanagedIListImpl_BaseIIDList[] =
 
 int __stdcall _UnmanagedIListImpl_IID_Lookup( const IID * pIID, int * pIndex )
 {
-    
-    if(!_UnmanagedIListImpl_CHECK_IID(0))
-        {
-        *pIndex = 0;
-        return 1;
-        }
+    IID_BS_LOOKUP_SETUP
 
-    return 0;
+    IID_BS_LOOKUP_INITIAL_TEST( _UnmanagedIListImpl, 2, 1 )
+    IID_BS_LOOKUP_RETURN_RESULT( _UnmanagedIListImpl, 2, *pIndex )
+    
 }
 
 const ExtendedProxyFileInfo UnmanagedIListImpl_ProxyFileInfo = 
@@ -264,7 +338,7 @@ const ExtendedProxyFileInfo UnmanagedIListImpl_ProxyFileInfo =
     (const PCInterfaceName * ) & _UnmanagedIListImpl_InterfaceNamesList,
     (const IID ** ) & _UnmanagedIListImpl_BaseIIDList,
     & _UnmanagedIListImpl_IID_Lookup, 
-    1,
+    2,
     2,
     0, /* table of [async_uuid] interfaces */
     0, /* Filler1 */

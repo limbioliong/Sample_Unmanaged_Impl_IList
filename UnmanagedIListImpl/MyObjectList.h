@@ -1,4 +1,4 @@
-// MyStringList.h : Declaration of the CMyStringList
+// MyObjectList.h : Declaration of the CMyObjectList
 
 #pragma once
 #include "resource.h"       // main symbols
@@ -15,36 +15,37 @@
 
 using namespace ATL;
 
-// CMyStringList
 
-class ATL_NO_VTABLE CMyStringList :
+// CMyObjectList
+
+class ATL_NO_VTABLE CMyObjectList :
 	public CComObjectRootEx<CComSingleThreadModel>,
-	public CComCoClass<CMyStringList, &CLSID_MyStringList>,
+	public CComCoClass<CMyObjectList, &CLSID_MyObjectList>,
 	public ISupportErrorInfo,
-	public IDispatchImpl<IMyStringList, &IID_IMyStringList, &LIBID_UnmanagedIListImplLib, /*wMajor =*/ 1, /*wMinor =*/ 0>,
+	public IDispatchImpl<IMyObjectList, &IID_IMyObjectList, &LIBID_UnmanagedIListImplLib, /*wMajor =*/ 1, /*wMinor =*/ 0>,
 	public IDispatchImpl<IList, &__uuidof(IList), &__uuidof(__mscorlib), 2, 4>,
 	public IDispatchImpl<IEnumerable, &__uuidof(IEnumerable), &__uuidof(__mscorlib), 2, 4>,
 	public IDispatchImpl<ICollection, &__uuidof(ICollection), &__uuidof(__mscorlib), 2, 4>,
-	public IEnumVARIANT	
+	public IEnumVARIANT
 {
 public:
-	CMyStringList() : 
+	CMyObjectList() :
 		m_iElementsFetched(0)
 	{
 	}
 
-DECLARE_REGISTRY_RESOURCEID(106)
+DECLARE_REGISTRY_RESOURCEID(107)
 
 
-BEGIN_COM_MAP(CMyStringList)
-	COM_INTERFACE_ENTRY(IMyStringList)
+BEGIN_COM_MAP(CMyObjectList)
+	COM_INTERFACE_ENTRY(IMyObjectList)
 	//COM_INTERFACE_ENTRY(IDispatch)
 	COM_INTERFACE_ENTRY(IList)
+	COM_INTERFACE_ENTRY2(IDispatch, IList)
+	COM_INTERFACE_ENTRY(ISupportErrorInfo)
 	COM_INTERFACE_ENTRY(IEnumerable)
 	COM_INTERFACE_ENTRY(ICollection)
 	COM_INTERFACE_ENTRY(IEnumVARIANT)
-	COM_INTERFACE_ENTRY2(IDispatch, IList)
-	COM_INTERFACE_ENTRY(ISupportErrorInfo)
 END_COM_MAP()
 
 // ISupportsErrorInfo
@@ -58,6 +59,10 @@ END_COM_MAP()
 		return S_OK;
 	}
 
+	void FinalRelease()
+	{
+	}
+
 public:
 
 	// IList Implementation.
@@ -67,13 +72,13 @@ public:
 		/*[out,retval]*/ VARIANT * pRetVal
 	)
 	{
-		if ((index < 0) || (index >= (long)(myStringList.size())))
+		if ((index < 0) || (index >= (long)(myVarList.size())))
 		{
 			// See :
 			// ArgumentOutOfRangeException Class
 			// https://docs.microsoft.com/en-us/dotnet/api/system.argumentoutofrangeexception?view=netframework-4.8
 			//
-			MySetErrorInfo("The Index is Out of Range", "UnmanagedIListImpl.MyStringList");
+			MySetErrorInfo("The Index is Out of Range", "UnmanagedIListImpl.MyObjectList");
 
 			// #include <corerror.h> in order to use COR_E_ARGUMENTOUTOFRANGE.
 			return COR_E_ARGUMENTOUTOFRANGE;
@@ -83,9 +88,9 @@ public:
 
 		VariantInit(pRetVal);
 
-		string str = myStringList[index];
-		V_VT(pRetVal) = VT_BSTR;
-		V_BSTR(pRetVal) = ::SysAllocString(A2W(str.c_str()));
+		VARIANT& varSource = myVarList[index];
+
+		VariantCopy(pRetVal, &varSource);
 
 		return S_OK;
 	}
@@ -96,22 +101,19 @@ public:
 		/*[in]*/ VARIANT pRetVal
 	)
 	{
-		if ((index < 0) || (index >= (long)(myStringList.size())))
+		if ((index < 0) || (index >= (long)(myVarList.size())))
 		{
 			// See :
 			// ArgumentOutOfRangeException Class
 			// https://docs.microsoft.com/en-us/dotnet/api/system.argumentoutofrangeexception?view=netframework-4.8
 			//
-			MySetErrorInfo("The Index is Out of Range", "UnmanagedIListImpl.MyStringList");
+			MySetErrorInfo("The Index is Out of Range", "UnmanagedIListImpl.MyObjectList");
 
 			// #include <corerror.h> in order to use COR_E_ARGUMENTOUTOFRANGE.
 			return COR_E_ARGUMENTOUTOFRANGE;
 		}
 
-		USES_CONVERSION;
-
-		string strValue(W2A(V_BSTR(&pRetVal)));
-		myStringList[index] = strValue;
+		myVarList[index] = pRetVal;
 
 		return S_OK;
 	}
@@ -124,10 +126,9 @@ public:
 	{
 		USES_CONVERSION;
 
-		size_t size = myStringList.size();
+		size_t size = myVarList.size();
 
-		string str(W2A(V_BSTR(&value)));
-		myStringList.push_back(str);
+		myVarList.push_back(value);
 
 		*pRetVal = size;
 
@@ -142,11 +143,9 @@ public:
 	{
 		USES_CONVERSION;
 
-		string strValue(W2A(V_BSTR(&value)));
+		vector<_variant_t>::iterator theIterator = find(myVarList.begin(), myVarList.end(), value);
 
-		vector<string>::iterator theIterator = find(myStringList.begin(), myStringList.end(), strValue);
-
-		if (theIterator != myStringList.end())
+		if (theIterator != myVarList.end())
 		{
 			*pRetVal = VARIANT_TRUE;
 		}
@@ -160,7 +159,7 @@ public:
 
 	virtual HRESULT __stdcall Clear()
 	{
-		myStringList.clear();
+		myVarList.clear();
 
 		return S_OK;
 	}
@@ -193,7 +192,7 @@ public:
 	{
 		USES_CONVERSION;
 
-		string strValue(W2A(V_BSTR(&value)));
+		_variant_t varValue = value;
 
 		int i = 0;
 
@@ -201,25 +200,25 @@ public:
 		// Lambda Expressions in C++
 		// https://docs.microsoft.com/en-us/cpp/cpp/lambda-expressions-in-cpp?view=vs-2019
 		//
-		vector<string>::iterator theIterator = find_if
+		vector<_variant_t>::iterator theIterator = find_if
 		(
-			myStringList.begin(), 
-			myStringList.end(), 
-			[strValue, &i](string& str)
+			myVarList.begin(),
+			myVarList.end(),
+			[varValue, &i](_variant_t& var)
+		{
+			if (var == varValue)
 			{
-				if (str == strValue)
-				{
-					return true;
-				}
-				else
-				{
-					i++;
-					return false;
-				}				
-			}			
+				return true;
+			}
+			else
+			{
+				i++;
+				return false;
+			}
+		}
 		);
 
-		if (theIterator != myStringList.end())
+		if (theIterator != myVarList.end())
 		{
 			*pRetVal = (long)i;
 		}
@@ -239,27 +238,29 @@ public:
 	{
 		USES_CONVERSION;
 
-		if ((index < 0) || (index > (long)(myStringList.size())))
+		// Note the MSDN documentation for IList::Insert() states that :
+		// If index equals the number of items in the IList, then value is appended to the end.
+		// Hence "index" can be a value equal to myVarList.size().
+		if ((index < 0) || (index > (long)(myVarList.size())))
 		{
 			// See :
 			// ArgumentOutOfRangeException Class
 			// https://docs.microsoft.com/en-us/dotnet/api/system.argumentoutofrangeexception?view=netframework-4.8
 			//
-			MySetErrorInfo("The Index is Out of Range", "UnmanagedIListImpl.MyStringList");
+			MySetErrorInfo("The Index is Out of Range", "UnmanagedIListImpl.MyObjectList");
 
 			// #include <corerror.h> in order to use COR_E_ARGUMENTOUTOFRANGE.
 			return COR_E_ARGUMENTOUTOFRANGE;
 		}
 
 		long l = 0;
-		string strValue(W2A(V_BSTR(&value)));
-		vector<string>::iterator theIterator;
+		vector<_variant_t>::iterator theIterator;
 
 		for
 		(
-			theIterator = myStringList.begin();
-			theIterator != myStringList.end();
-			theIterator++, l++
+				theIterator = myVarList.begin();
+				theIterator != myVarList.end();
+				theIterator++, l++
 		)
 		{
 			if (l == index)
@@ -268,7 +269,7 @@ public:
 			}
 		}
 
-		myStringList.insert(theIterator, strValue);
+		myVarList.insert(theIterator, value);
 
 		return S_OK;
 	}
@@ -307,25 +308,25 @@ public:
 		/*[in]*/ long index
 	)
 	{
-		if ((index < 0) || (index >= (long)(myStringList.size())))
+		if ((index < 0) || (index >= (long)(myVarList.size())))
 		{
 			// See :
 			// ArgumentOutOfRangeException Class
 			// https://docs.microsoft.com/en-us/dotnet/api/system.argumentoutofrangeexception?view=netframework-4.8
 			//
-			MySetErrorInfo("The Index is Out of Range", "UnmanagedIListImpl.MyStringList");
+			MySetErrorInfo("The Index is Out of Range", "UnmanagedIListImpl.MyObjectList");
 
 			// #include <corerror.h> in order to use COR_E_ARGUMENTOUTOFRANGE.
 			return COR_E_ARGUMENTOUTOFRANGE;
 		}
 
 		long l = 0;
-		vector<string>::iterator theIterator;
+		vector<_variant_t>::iterator theIterator;
 
 		for
 		(
-			theIterator = myStringList.begin();
-			theIterator != myStringList.end();
+			theIterator = myVarList.begin();
+			theIterator != myVarList.end();
 			theIterator++, l++
 		)
 		{
@@ -335,7 +336,7 @@ public:
 			}
 		}
 
-		myStringList.erase(theIterator);
+		myVarList.erase(theIterator);
 
 		return S_OK;
 	}
@@ -369,7 +370,7 @@ public:
 		(
 			IID_NULL,
 			&szMember,
-			1, 
+			1,
 			LOCALE_SYSTEM_DEFAULT,
 			&dispid
 		);
@@ -378,10 +379,10 @@ public:
 		{
 			int i = 0;
 
-			for (i = 0; i < (int)(myStringList.size()); i++)
+			for (i = 0; i < (int)(myVarList.size()); i++)
 			{
 				VARIANTARG	vargParams[2];
-				VARIANT		varObject;				
+				VARIANT		varObject;				 
 				VARIANT		varResult;
 				DISPPARAMS	dp;
 				EXCEPINFO	excepinfo;
@@ -390,16 +391,14 @@ public:
 				VariantInit(&(varObject));
 				VariantInit(&varResult);
 				VariantInit(&(vargParams[0]));
-				VariantInit(&(vargParams[1]));
-
-				V_VT(&varObject) = VT_BSTR;
-				V_BSTR(&varObject) = ::SysAllocString(A2W(myStringList[i].c_str()));
+				VariantInit(&(vargParams[1]));				
 
 				// The last parameter for the method to call (e.g. SetValue())
 				// must be "pushed in" first.
 				V_VT(&(vargParams[0])) = VT_I4;
 				V_I4(&(vargParams[0])) = index + i;
 
+				VariantCopy(&varObject, &(myVarList[i]));
 				V_VT(&(vargParams[1])) = VT_BYREF | VT_VARIANT;
 				V_VARIANTREF(&(vargParams[1])) = &varObject;
 
@@ -474,7 +473,7 @@ public:
 		/*[out,retval]*/ long * pRetVal
 	)
 	{
-		*pRetVal = myStringList.size();
+		*pRetVal = myVarList.size();
 
 		return S_OK;
 	}
@@ -491,7 +490,19 @@ public:
 
 		VariantInit(pRetVal);
 		V_VT(pRetVal) = VT_DISPATCH;
-		V_DISPATCH(pRetVal) = pDispatch;
+		V_DISPATCH(pRetVal) = pDispatch.Detach();
+
+		// We call pDispatch.Detach() so that pDispatch
+		// will not perform a Release() when it goes 
+		// out of scope. This is because a reference
+		// count must be maintained by the caller 
+		// of get_SyncRoot(). This caller will be
+		// responsible for calling Release() at the 
+		// appropriate time.
+
+		// See :
+		// _com_ptr_t::Detach()
+		// https://docs.microsoft.com/en-us/cpp/cpp/com-ptr-t-detach?view=vs-2019
 
 		return S_OK;
 	}
@@ -519,7 +530,7 @@ public:
 		// Initialize receiver.
 		*pCeltFetched = 0;
 
-		if (m_iElementsFetched >= (ULONG)(myStringList.size()))
+		if (m_iElementsFetched >= (ULONG)(myVarList.size()))
 		{
 			// Reset m_iElementsFetched to 0
 			// so that we can start again.
@@ -530,14 +541,24 @@ public:
 		ULONG i = 0;
 		for (i = 0; i < celt; i++)
 		{
-			if (m_iElementsFetched + i >= myStringList.size())
+			if (m_iElementsFetched + i >= myVarList.size())
 			{
 				break;
 			}
 
+			VARIANT* pVariant = (VARIANT*)::CoTaskMemAlloc(sizeof(VARIANT));
+			// Note : must call VariantInit() to initialize pVariant.
+			// The importance of this is documented in : 
+			// VariantCopy function
+			// https://docs.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-variantcopy
+			// where the following is written :
+			// "pvargDest must point to a valid initialized variant, and not simply to an uninitialized memory location".
+			VariantInit(pVariant);
+			VariantCopy(pVariant, &(myVarList[m_iElementsFetched + i]));
+
 			VariantInit(&(rgVar[i]));
-			V_VT(&(rgVar[i])) = VT_BSTR;
-			V_BSTR(&(rgVar[i])) = ::SysAllocString(A2W(myStringList[m_iElementsFetched + i].c_str()));
+			V_VT(&(rgVar[i])) = VT_BYREF | VT_VARIANT;
+			V_VARIANTREF(&(rgVar[i])) = pVariant;
 		}
 
 		*pCeltFetched = i;
@@ -553,7 +574,7 @@ public:
 	{
 		int iTemp = celt;
 
-		if (m_iElementsFetched + celt >= myStringList.size())
+		if (m_iElementsFetched + celt >= myVarList.size())
 		{
 			return S_FALSE;
 		}
@@ -562,7 +583,7 @@ public:
 			m_iElementsFetched += celt;
 
 			return S_OK;
-		}		
+		}
 	}
 
 	virtual HRESULT STDMETHODCALLTYPE Reset(void)
@@ -581,26 +602,26 @@ public:
 	{
 		*ppEnum = NULL;
 
-		HRESULT hrRetTemp = CMyStringList::CreateInstance(ppEnum);
+		HRESULT hrRetTemp = CMyObjectList::CreateInstance(ppEnum);
 
 		if (SUCCEEDED(hrRetTemp))
 		{
-			CMyStringList* pCMyStringList = static_cast<CMyStringList*>(*ppEnum);
-			pCMyStringList->myStringList = myStringList;
-			pCMyStringList->m_iElementsFetched = m_iElementsFetched;
+			CMyObjectList* pCMyObjectList = static_cast<CMyObjectList*>(*ppEnum);
+			pCMyObjectList->myVarList = myVarList;
+			pCMyObjectList->m_iElementsFetched = m_iElementsFetched;
 			return S_OK;
 		}
 		else
 		{
 			return E_OUTOFMEMORY;
-		}		
+		}
 	}
 
-
 private:
-	vector<string> myStringList;
+	vector<_variant_t> myVarList;
 	ULONG m_iElementsFetched;
+
 
 };
 
-OBJECT_ENTRY_AUTO(__uuidof(MyStringList), CMyStringList)
+OBJECT_ENTRY_AUTO(__uuidof(MyObjectList), CMyObjectList)

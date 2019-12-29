@@ -6,6 +6,8 @@
 
 import "oaidl.idl";
 import "ocidl.idl";
+// An alternative to declaring the IList interface inside this IDL is to import mscorlib.idl
+// import "mscorlib.idl";
 
 [
 	object,
@@ -17,6 +19,18 @@ import "ocidl.idl";
 interface IMyStringList : IDispatch
 {
 };
+
+[
+	object,
+	uuid(bdd1639b-1ef3-40ac-8704-20a963101e01),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IMyObjectList : IDispatch
+{
+};
+
 [
 	uuid(28f19030-36fe-4bdf-b71a-1aa1d484b380),
 	version(1.0),
@@ -24,13 +38,75 @@ interface IMyStringList : IDispatch
 library UnmanagedIListImplLib
 {
 	importlib("stdole2.tlb");
+	// Yet another alternative to declaring the IList interface inside this IDL is to importlib mscorlib.tlb
+	//importlib("mscorlib.tlb");
+
+	// We declare the COM interface for IList here so that
+	// the MyObjectList and MyStringList coclasses
+	// can implement them.
+	[
+		odl,
+		uuid(7BCFA00F-F764-3113-9140-3BBD127A96BB),
+		version(1.0),
+		dual,
+		oleautomation,
+		custom(0F21F359-AB84-41E8-9A78-36D110E6D2F9, "System.Collections.IList")
+
+	]
+	interface IList : IDispatch {
+		[id(00000000), propget]
+		HRESULT Item(
+			[in] long index,
+			[out, retval] VARIANT* pRetVal);
+		[id(00000000), propputref]
+		HRESULT Item(
+			[in] long index,
+			[in] VARIANT pRetVal);
+		[id(0x60020002)]
+		HRESULT Add(
+			[in] VARIANT value,
+			[out, retval] long* pRetVal);
+		[id(0x60020003)]
+		HRESULT Contains(
+			[in] VARIANT value,
+			[out, retval] VARIANT_BOOL* pRetVal);
+		[id(0x60020004)]
+		HRESULT Clear();
+		[id(0x60020005), propget]
+		HRESULT IsReadOnly([out, retval] VARIANT_BOOL* pRetVal);
+		[id(0x60020006), propget]
+		HRESULT IsFixedSize([out, retval] VARIANT_BOOL* pRetVal);
+		[id(0x60020007)]
+		HRESULT IndexOf(
+			[in] VARIANT value,
+			[out, retval] long* pRetVal);
+		[id(0x60020008)]
+		HRESULT Insert(
+			[in] long index,
+			[in] VARIANT value);
+		[id(0x60020009)]
+		HRESULT Remove([in] VARIANT value);
+		[id(0x6002000a)]
+		HRESULT RemoveAt([in] long index);
+	};
+
 	[
 		uuid(690078d3-9a2c-4bb9-8213-d1fbf2e677a8)
 	]
 	coclass MyStringList
 	{
-		[default] interface IMyStringList;
+		[default] interface IList;
+		interface IMyStringList;
+	};
+	[
+		uuid(550cdb65-7ad2-4491-9474-21b31e29800b)
+	]
+	coclass MyObjectList
+	{
+		[default] interface IList;
+		interface IMyObjectList;
 	};
 };
 
+import "shobjidl.idl";
 import "shobjidl.idl";

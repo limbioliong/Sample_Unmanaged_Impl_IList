@@ -30,8 +30,11 @@
 #include <algorithm>
 using namespace std;
 
-// We have #import the types of mscorlib which includes IList. 
-#import "mscorlib.tlb" raw_interfaces_only  rename("_Module", "___Module") rename("ReportEvent", "_ReportEvent")
+// We have #import the types declared in mscorlib. 
+#import "mscorlib.tlb" raw_interfaces_only  rename("_Module", "___Module") rename("ReportEvent", "_ReportEvent") rename("IList", "_IList")
+
 using namespace mscorlib;
 
 #include <corerror.h>
+
+void MySetErrorInfo(LPCTSTR lpszDescription, LPCTSTR lpszSource);
