@@ -31,7 +31,7 @@
 using namespace std;
 
 // We have #import the types declared in mscorlib. 
-#import "mscorlib.tlb" raw_interfaces_only  rename("_Module", "___Module") rename("ReportEvent", "_ReportEvent") rename("IList", "_IList")
+#import "mscorlib.tlb" raw_interfaces_only  rename("_Module", "___Module") rename("ReportEvent", "_ReportEvent") rename("IList", "_IList") rename("_Array", "__Array") rename("ICollection", "_ICollection") rename("IEnumerable", "_IEnumerable")
 
 using namespace mscorlib;
 

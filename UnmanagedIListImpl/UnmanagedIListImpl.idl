@@ -41,6 +41,63 @@ library UnmanagedIListImplLib
 	// Yet another alternative to declaring the IList interface inside this IDL is to importlib mscorlib.tlb
 	//importlib("mscorlib.tlb");
 
+	// We declare the COM interface for _Array here 
+	// as it is referenced by the ICollection interface
+	// below.
+	[
+		odl,
+		uuid(2B67CECE-71C3-36A9-A136-925CCC1935A8),
+		hidden,
+		dual,
+		oleautomation,
+		custom(0F21F359-AB84-41E8-9A78-36D110E6D2F9, "System.Array")
+
+	]
+	interface _Array : IDispatch {
+	};
+
+	// We declare the COM interface for ICollection here so that
+	// the MyObjectList and MyStringList coclasses
+	// can implement them.
+	[
+		odl,
+		uuid(DE8DB6F8-D101-3A92-8D1C-E72E5F10E992),
+		version(1.0),
+		dual,
+		oleautomation,
+		custom(0F21F359-AB84-41E8-9A78-36D110E6D2F9, "System.Collections.ICollection")
+
+	]
+	interface ICollection : IDispatch {
+		[id(0x60020000)]
+		HRESULT CopyTo(
+			[in] _Array* Array,
+			[in] long index);
+		[id(0x60020001), propget]
+		HRESULT Count([out, retval] long* pRetVal);
+		[id(0x60020002), propget]
+		HRESULT SyncRoot([out, retval] VARIANT* pRetVal);
+		[id(0x60020003), propget]
+		HRESULT IsSynchronized([out, retval] VARIANT_BOOL* pRetVal);
+	};
+
+	// We declare the COM interface for IEnumerable here so that
+	// the MyObjectList and MyStringList coclasses
+	// can implement them.
+	[
+		odl,
+		uuid(496B0ABE-CDEE-11D3-88E8-00902754C43A),
+		version(1.0),
+		dual,
+		oleautomation,
+		custom(0F21F359-AB84-41E8-9A78-36D110E6D2F9, "System.Collections.IEnumerable")
+
+	]
+	interface IEnumerable : IDispatch {
+		[id(0xfffffffc)]
+		HRESULT GetEnumerator([out, retval] IEnumVARIANT** pRetVal);
+	};
+
 	// We declare the COM interface for IList here so that
 	// the MyObjectList and MyStringList coclasses
 	// can implement them.
@@ -96,6 +153,8 @@ library UnmanagedIListImplLib
 	coclass MyStringList
 	{
 		[default] interface IList;
+		interface ICollection;
+		interface IEnumerable;
 		interface IMyStringList;
 	};
 	[
@@ -104,6 +163,8 @@ library UnmanagedIListImplLib
 	coclass MyObjectList
 	{
 		[default] interface IList;
+		interface ICollection;
+		interface IEnumerable;
 		interface IMyObjectList;
 	};
 };

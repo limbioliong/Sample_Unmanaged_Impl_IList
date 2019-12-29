@@ -58,6 +58,10 @@ END_COM_MAP()
 		return S_OK;
 	}
 
+	void FinalRelease()
+	{
+	}
+
 public:
 
 	// IList Implementation.
@@ -108,6 +112,14 @@ public:
 			return COR_E_ARGUMENTOUTOFRANGE;
 		}
 
+		// pRetVal must contain a BSTR.
+		if (V_VT(&pRetVal) != VT_BSTR)
+		{
+			MySetErrorInfo("Invalid argument. BSTR expected.", "UnmanagedIListImpl.MyStringList");
+
+			return COR_E_ARGUMENT;
+		}
+
 		USES_CONVERSION;
 
 		string strValue(W2A(V_BSTR(&pRetVal)));
@@ -122,6 +134,14 @@ public:
 		/*[out,retval]*/ long * pRetVal
 	)
 	{
+		// value must contain a BSTR.
+		if (V_VT(&value) != VT_BSTR)
+		{
+			MySetErrorInfo("Invalid argument. BSTR expected.", "UnmanagedIListImpl.MyStringList");
+
+			return COR_E_ARGUMENT;
+		}
+
 		USES_CONVERSION;
 
 		size_t size = myStringList.size();
@@ -140,6 +160,14 @@ public:
 		/*[out,retval]*/ VARIANT_BOOL * pRetVal
 	)
 	{
+		// value must contain a BSTR.
+		if (V_VT(&value) != VT_BSTR)
+		{
+			MySetErrorInfo("Invalid argument. BSTR expected.", "UnmanagedIListImpl.MyStringList");
+
+			return COR_E_ARGUMENT;
+		}
+
 		USES_CONVERSION;
 
 		string strValue(W2A(V_BSTR(&value)));
@@ -191,6 +219,14 @@ public:
 		/*[out,retval]*/ long * pRetVal
 	)
 	{
+		// value must contain a BSTR.
+		if (V_VT(&value) != VT_BSTR)
+		{
+			MySetErrorInfo("Invalid argument. BSTR expected.", "UnmanagedIListImpl.MyStringList");
+
+			return COR_E_ARGUMENT;
+		}
+
 		USES_CONVERSION;
 
 		string strValue(W2A(V_BSTR(&value)));
@@ -249,6 +285,14 @@ public:
 
 			// #include <corerror.h> in order to use COR_E_ARGUMENTOUTOFRANGE.
 			return COR_E_ARGUMENTOUTOFRANGE;
+		}
+
+		// value must contain a BSTR.
+		if (V_VT(&value) != VT_BSTR)
+		{
+			MySetErrorInfo("Invalid argument. BSTR expected.", "UnmanagedIListImpl.MyStringList");
+
+			return COR_E_ARGUMENT;
 		}
 
 		long l = 0;

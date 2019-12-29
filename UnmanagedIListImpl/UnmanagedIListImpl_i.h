@@ -58,6 +58,27 @@ typedef interface IMyObjectList IMyObjectList;
 #endif 	/* __IMyObjectList_FWD_DEFINED__ */
 
 
+#ifndef ___Array_FWD_DEFINED__
+#define ___Array_FWD_DEFINED__
+typedef interface _Array _Array;
+
+#endif 	/* ___Array_FWD_DEFINED__ */
+
+
+#ifndef __ICollection_FWD_DEFINED__
+#define __ICollection_FWD_DEFINED__
+typedef interface ICollection ICollection;
+
+#endif 	/* __ICollection_FWD_DEFINED__ */
+
+
+#ifndef __IEnumerable_FWD_DEFINED__
+#define __IEnumerable_FWD_DEFINED__
+typedef interface IEnumerable IEnumerable;
+
+#endif 	/* __IEnumerable_FWD_DEFINED__ */
+
+
 #ifndef __IList_FWD_DEFINED__
 #define __IList_FWD_DEFINED__
 typedef interface IList IList;
@@ -348,6 +369,418 @@ EXTERN_C const IID IID_IMyObjectList;
 
 
 EXTERN_C const IID LIBID_UnmanagedIListImplLib;
+
+#ifndef ___Array_INTERFACE_DEFINED__
+#define ___Array_INTERFACE_DEFINED__
+
+/* interface _Array */
+/* [object][custom][oleautomation][dual][hidden][uuid] */ 
+
+
+EXTERN_C const IID IID__Array;
+
+#if defined(__cplusplus) && !defined(CINTERFACE)
+    
+    MIDL_INTERFACE("2B67CECE-71C3-36A9-A136-925CCC1935A8")
+    _Array : public IDispatch
+    {
+    public:
+    };
+    
+    
+#else 	/* C style interface */
+
+    typedef struct _ArrayVtbl
+    {
+        BEGIN_INTERFACE
+        
+        HRESULT ( STDMETHODCALLTYPE *QueryInterface )( 
+            _Array * This,
+            /* [in] */ REFIID riid,
+            /* [annotation][iid_is][out] */ 
+            _COM_Outptr_  void **ppvObject);
+        
+        ULONG ( STDMETHODCALLTYPE *AddRef )( 
+            _Array * This);
+        
+        ULONG ( STDMETHODCALLTYPE *Release )( 
+            _Array * This);
+        
+        HRESULT ( STDMETHODCALLTYPE *GetTypeInfoCount )( 
+            _Array * This,
+            /* [out] */ UINT *pctinfo);
+        
+        HRESULT ( STDMETHODCALLTYPE *GetTypeInfo )( 
+            _Array * This,
+            /* [in] */ UINT iTInfo,
+            /* [in] */ LCID lcid,
+            /* [out] */ ITypeInfo **ppTInfo);
+        
+        HRESULT ( STDMETHODCALLTYPE *GetIDsOfNames )( 
+            _Array * This,
+            /* [in] */ REFIID riid,
+            /* [size_is][in] */ LPOLESTR *rgszNames,
+            /* [range][in] */ UINT cNames,
+            /* [in] */ LCID lcid,
+            /* [size_is][out] */ DISPID *rgDispId);
+        
+        /* [local] */ HRESULT ( STDMETHODCALLTYPE *Invoke )( 
+            _Array * This,
+            /* [annotation][in] */ 
+            _In_  DISPID dispIdMember,
+            /* [annotation][in] */ 
+            _In_  REFIID riid,
+            /* [annotation][in] */ 
+            _In_  LCID lcid,
+            /* [annotation][in] */ 
+            _In_  WORD wFlags,
+            /* [annotation][out][in] */ 
+            _In_  DISPPARAMS *pDispParams,
+            /* [annotation][out] */ 
+            _Out_opt_  VARIANT *pVarResult,
+            /* [annotation][out] */ 
+            _Out_opt_  EXCEPINFO *pExcepInfo,
+            /* [annotation][out] */ 
+            _Out_opt_  UINT *puArgErr);
+        
+        END_INTERFACE
+    } _ArrayVtbl;
+
+    interface _Array
+    {
+        CONST_VTBL struct _ArrayVtbl *lpVtbl;
+    };
+
+    
+
+#ifdef COBJMACROS
+
+
+#define _Array_QueryInterface(This,riid,ppvObject)	\
+    ( (This)->lpVtbl -> QueryInterface(This,riid,ppvObject) ) 
+
+#define _Array_AddRef(This)	\
+    ( (This)->lpVtbl -> AddRef(This) ) 
+
+#define _Array_Release(This)	\
+    ( (This)->lpVtbl -> Release(This) ) 
+
+
+#define _Array_GetTypeInfoCount(This,pctinfo)	\
+    ( (This)->lpVtbl -> GetTypeInfoCount(This,pctinfo) ) 
+
+#define _Array_GetTypeInfo(This,iTInfo,lcid,ppTInfo)	\
+    ( (This)->lpVtbl -> GetTypeInfo(This,iTInfo,lcid,ppTInfo) ) 
+
+#define _Array_GetIDsOfNames(This,riid,rgszNames,cNames,lcid,rgDispId)	\
+    ( (This)->lpVtbl -> GetIDsOfNames(This,riid,rgszNames,cNames,lcid,rgDispId) ) 
+
+#define _Array_Invoke(This,dispIdMember,riid,lcid,wFlags,pDispParams,pVarResult,pExcepInfo,puArgErr)	\
+    ( (This)->lpVtbl -> Invoke(This,dispIdMember,riid,lcid,wFlags,pDispParams,pVarResult,pExcepInfo,puArgErr) ) 
+
+
+#endif /* COBJMACROS */
+
+
+#endif 	/* C style interface */
+
+
+
+
+#endif 	/* ___Array_INTERFACE_DEFINED__ */
+
+
+#ifndef __ICollection_INTERFACE_DEFINED__
+#define __ICollection_INTERFACE_DEFINED__
+
+/* interface ICollection */
+/* [object][custom][oleautomation][dual][version][uuid] */ 
+
+
+EXTERN_C const IID IID_ICollection;
+
+#if defined(__cplusplus) && !defined(CINTERFACE)
+    
+    MIDL_INTERFACE("DE8DB6F8-D101-3A92-8D1C-E72E5F10E992")
+    ICollection : public IDispatch
+    {
+    public:
+        virtual /* [id] */ HRESULT STDMETHODCALLTYPE CopyTo( 
+            /* [in] */ _Array *Array,
+            /* [in] */ long index) = 0;
+        
+        virtual /* [propget][id] */ HRESULT STDMETHODCALLTYPE get_Count( 
+            /* [retval][out] */ long *pRetVal) = 0;
+        
+        virtual /* [propget][id] */ HRESULT STDMETHODCALLTYPE get_SyncRoot( 
+            /* [retval][out] */ VARIANT *pRetVal) = 0;
+        
+        virtual /* [propget][id] */ HRESULT STDMETHODCALLTYPE get_IsSynchronized( 
+            /* [retval][out] */ VARIANT_BOOL *pRetVal) = 0;
+        
+    };
+    
+    
+#else 	/* C style interface */
+
+    typedef struct ICollectionVtbl
+    {
+        BEGIN_INTERFACE
+        
+        HRESULT ( STDMETHODCALLTYPE *QueryInterface )( 
+            ICollection * This,
+            /* [in] */ REFIID riid,
+            /* [annotation][iid_is][out] */ 
+            _COM_Outptr_  void **ppvObject);
+        
+        ULONG ( STDMETHODCALLTYPE *AddRef )( 
+            ICollection * This);
+        
+        ULONG ( STDMETHODCALLTYPE *Release )( 
+            ICollection * This);
+        
+        HRESULT ( STDMETHODCALLTYPE *GetTypeInfoCount )( 
+            ICollection * This,
+            /* [out] */ UINT *pctinfo);
+        
+        HRESULT ( STDMETHODCALLTYPE *GetTypeInfo )( 
+            ICollection * This,
+            /* [in] */ UINT iTInfo,
+            /* [in] */ LCID lcid,
+            /* [out] */ ITypeInfo **ppTInfo);
+        
+        HRESULT ( STDMETHODCALLTYPE *GetIDsOfNames )( 
+            ICollection * This,
+            /* [in] */ REFIID riid,
+            /* [size_is][in] */ LPOLESTR *rgszNames,
+            /* [range][in] */ UINT cNames,
+            /* [in] */ LCID lcid,
+            /* [size_is][out] */ DISPID *rgDispId);
+        
+        /* [local] */ HRESULT ( STDMETHODCALLTYPE *Invoke )( 
+            ICollection * This,
+            /* [annotation][in] */ 
+            _In_  DISPID dispIdMember,
+            /* [annotation][in] */ 
+            _In_  REFIID riid,
+            /* [annotation][in] */ 
+            _In_  LCID lcid,
+            /* [annotation][in] */ 
+            _In_  WORD wFlags,
+            /* [annotation][out][in] */ 
+            _In_  DISPPARAMS *pDispParams,
+            /* [annotation][out] */ 
+            _Out_opt_  VARIANT *pVarResult,
+            /* [annotation][out] */ 
+            _Out_opt_  EXCEPINFO *pExcepInfo,
+            /* [annotation][out] */ 
+            _Out_opt_  UINT *puArgErr);
+        
+        /* [id] */ HRESULT ( STDMETHODCALLTYPE *CopyTo )( 
+            ICollection * This,
+            /* [in] */ _Array *Array,
+            /* [in] */ long index);
+        
+        /* [propget][id] */ HRESULT ( STDMETHODCALLTYPE *get_Count )( 
+            ICollection * This,
+            /* [retval][out] */ long *pRetVal);
+        
+        /* [propget][id] */ HRESULT ( STDMETHODCALLTYPE *get_SyncRoot )( 
+            ICollection * This,
+            /* [retval][out] */ VARIANT *pRetVal);
+        
+        /* [propget][id] */ HRESULT ( STDMETHODCALLTYPE *get_IsSynchronized )( 
+            ICollection * This,
+            /* [retval][out] */ VARIANT_BOOL *pRetVal);
+        
+        END_INTERFACE
+    } ICollectionVtbl;
+
+    interface ICollection
+    {
+        CONST_VTBL struct ICollectionVtbl *lpVtbl;
+    };
+
+    
+
+#ifdef COBJMACROS
+
+
+#define ICollection_QueryInterface(This,riid,ppvObject)	\
+    ( (This)->lpVtbl -> QueryInterface(This,riid,ppvObject) ) 
+
+#define ICollection_AddRef(This)	\
+    ( (This)->lpVtbl -> AddRef(This) ) 
+
+#define ICollection_Release(This)	\
+    ( (This)->lpVtbl -> Release(This) ) 
+
+
+#define ICollection_GetTypeInfoCount(This,pctinfo)	\
+    ( (This)->lpVtbl -> GetTypeInfoCount(This,pctinfo) ) 
+
+#define ICollection_GetTypeInfo(This,iTInfo,lcid,ppTInfo)	\
+    ( (This)->lpVtbl -> GetTypeInfo(This,iTInfo,lcid,ppTInfo) ) 
+
+#define ICollection_GetIDsOfNames(This,riid,rgszNames,cNames,lcid,rgDispId)	\
+    ( (This)->lpVtbl -> GetIDsOfNames(This,riid,rgszNames,cNames,lcid,rgDispId) ) 
+
+#define ICollection_Invoke(This,dispIdMember,riid,lcid,wFlags,pDispParams,pVarResult,pExcepInfo,puArgErr)	\
+    ( (This)->lpVtbl -> Invoke(This,dispIdMember,riid,lcid,wFlags,pDispParams,pVarResult,pExcepInfo,puArgErr) ) 
+
+
+#define ICollection_CopyTo(This,Array,index)	\
+    ( (This)->lpVtbl -> CopyTo(This,Array,index) ) 
+
+#define ICollection_get_Count(This,pRetVal)	\
+    ( (This)->lpVtbl -> get_Count(This,pRetVal) ) 
+
+#define ICollection_get_SyncRoot(This,pRetVal)	\
+    ( (This)->lpVtbl -> get_SyncRoot(This,pRetVal) ) 
+
+#define ICollection_get_IsSynchronized(This,pRetVal)	\
+    ( (This)->lpVtbl -> get_IsSynchronized(This,pRetVal) ) 
+
+#endif /* COBJMACROS */
+
+
+#endif 	/* C style interface */
+
+
+
+
+#endif 	/* __ICollection_INTERFACE_DEFINED__ */
+
+
+#ifndef __IEnumerable_INTERFACE_DEFINED__
+#define __IEnumerable_INTERFACE_DEFINED__
+
+/* interface IEnumerable */
+/* [object][custom][oleautomation][dual][version][uuid] */ 
+
+
+EXTERN_C const IID IID_IEnumerable;
+
+#if defined(__cplusplus) && !defined(CINTERFACE)
+    
+    MIDL_INTERFACE("496B0ABE-CDEE-11D3-88E8-00902754C43A")
+    IEnumerable : public IDispatch
+    {
+    public:
+        virtual /* [id] */ HRESULT STDMETHODCALLTYPE GetEnumerator( 
+            /* [retval][out] */ IEnumVARIANT **pRetVal) = 0;
+        
+    };
+    
+    
+#else 	/* C style interface */
+
+    typedef struct IEnumerableVtbl
+    {
+        BEGIN_INTERFACE
+        
+        HRESULT ( STDMETHODCALLTYPE *QueryInterface )( 
+            IEnumerable * This,
+            /* [in] */ REFIID riid,
+            /* [annotation][iid_is][out] */ 
+            _COM_Outptr_  void **ppvObject);
+        
+        ULONG ( STDMETHODCALLTYPE *AddRef )( 
+            IEnumerable * This);
+        
+        ULONG ( STDMETHODCALLTYPE *Release )( 
+            IEnumerable * This);
+        
+        HRESULT ( STDMETHODCALLTYPE *GetTypeInfoCount )( 
+            IEnumerable * This,
+            /* [out] */ UINT *pctinfo);
+        
+        HRESULT ( STDMETHODCALLTYPE *GetTypeInfo )( 
+            IEnumerable * This,
+            /* [in] */ UINT iTInfo,
+            /* [in] */ LCID lcid,
+            /* [out] */ ITypeInfo **ppTInfo);
+        
+        HRESULT ( STDMETHODCALLTYPE *GetIDsOfNames )( 
+            IEnumerable * This,
+            /* [in] */ REFIID riid,
+            /* [size_is][in] */ LPOLESTR *rgszNames,
+            /* [range][in] */ UINT cNames,
+            /* [in] */ LCID lcid,
+            /* [size_is][out] */ DISPID *rgDispId);
+        
+        /* [local] */ HRESULT ( STDMETHODCALLTYPE *Invoke )( 
+            IEnumerable * This,
+            /* [annotation][in] */ 
+            _In_  DISPID dispIdMember,
+            /* [annotation][in] */ 
+            _In_  REFIID riid,
+            /* [annotation][in] */ 
+            _In_  LCID lcid,
+            /* [annotation][in] */ 
+            _In_  WORD wFlags,
+            /* [annotation][out][in] */ 
+            _In_  DISPPARAMS *pDispParams,
+            /* [annotation][out] */ 
+            _Out_opt_  VARIANT *pVarResult,
+            /* [annotation][out] */ 
+            _Out_opt_  EXCEPINFO *pExcepInfo,
+            /* [annotation][out] */ 
+            _Out_opt_  UINT *puArgErr);
+        
+        /* [id] */ HRESULT ( STDMETHODCALLTYPE *GetEnumerator )( 
+            IEnumerable * This,
+            /* [retval][out] */ IEnumVARIANT **pRetVal);
+        
+        END_INTERFACE
+    } IEnumerableVtbl;
+
+    interface IEnumerable
+    {
+        CONST_VTBL struct IEnumerableVtbl *lpVtbl;
+    };
+
+    
+
+#ifdef COBJMACROS
+
+
+#define IEnumerable_QueryInterface(This,riid,ppvObject)	\
+    ( (This)->lpVtbl -> QueryInterface(This,riid,ppvObject) ) 
+
+#define IEnumerable_AddRef(This)	\
+    ( (This)->lpVtbl -> AddRef(This) ) 
+
+#define IEnumerable_Release(This)	\
+    ( (This)->lpVtbl -> Release(This) ) 
+
+
+#define IEnumerable_GetTypeInfoCount(This,pctinfo)	\
+    ( (This)->lpVtbl -> GetTypeInfoCount(This,pctinfo) ) 
+
+#define IEnumerable_GetTypeInfo(This,iTInfo,lcid,ppTInfo)	\
+    ( (This)->lpVtbl -> GetTypeInfo(This,iTInfo,lcid,ppTInfo) ) 
+
+#define IEnumerable_GetIDsOfNames(This,riid,rgszNames,cNames,lcid,rgDispId)	\
+    ( (This)->lpVtbl -> GetIDsOfNames(This,riid,rgszNames,cNames,lcid,rgDispId) ) 
+
+#define IEnumerable_Invoke(This,dispIdMember,riid,lcid,wFlags,pDispParams,pVarResult,pExcepInfo,puArgErr)	\
+    ( (This)->lpVtbl -> Invoke(This,dispIdMember,riid,lcid,wFlags,pDispParams,pVarResult,pExcepInfo,puArgErr) ) 
+
+
+#define IEnumerable_GetEnumerator(This,pRetVal)	\
+    ( (This)->lpVtbl -> GetEnumerator(This,pRetVal) ) 
+
+#endif /* COBJMACROS */
+
+
+#endif 	/* C style interface */
+
+
+
+
+#endif 	/* __IEnumerable_INTERFACE_DEFINED__ */
+
 
 #ifndef __IList_INTERFACE_DEFINED__
 #define __IList_INTERFACE_DEFINED__
