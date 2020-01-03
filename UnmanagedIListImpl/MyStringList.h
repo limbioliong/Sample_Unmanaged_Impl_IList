@@ -77,19 +77,17 @@ public:
 			// ArgumentOutOfRangeException Class
 			// https://docs.microsoft.com/en-us/dotnet/api/system.argumentoutofrangeexception?view=netframework-4.8
 			//
-			MySetErrorInfo("The Index is Out of Range", "UnmanagedIListImpl.MyStringList");
+			MySetErrorInfo(L"The Index is Out of Range", L"UnmanagedIListImpl.MyStringList");
 
 			// #include <corerror.h> in order to use COR_E_ARGUMENTOUTOFRANGE.
 			return COR_E_ARGUMENTOUTOFRANGE;
 		}
 
-		USES_CONVERSION;
-
 		VariantInit(pRetVal);
 
-		string str = myStringList[index];
+		wstring str = myStringList[index];
 		V_VT(pRetVal) = VT_BSTR;
-		V_BSTR(pRetVal) = ::SysAllocString(A2W(str.c_str()));
+		V_BSTR(pRetVal) = ::SysAllocString(str.c_str());
 
 		return S_OK;
 	}
@@ -106,7 +104,7 @@ public:
 			// ArgumentOutOfRangeException Class
 			// https://docs.microsoft.com/en-us/dotnet/api/system.argumentoutofrangeexception?view=netframework-4.8
 			//
-			MySetErrorInfo("The Index is Out of Range", "UnmanagedIListImpl.MyStringList");
+			MySetErrorInfo(L"The Index is Out of Range", L"UnmanagedIListImpl.MyStringList");
 
 			// #include <corerror.h> in order to use COR_E_ARGUMENTOUTOFRANGE.
 			return COR_E_ARGUMENTOUTOFRANGE;
@@ -115,14 +113,12 @@ public:
 		// pRetVal must contain a BSTR.
 		if (V_VT(&pRetVal) != VT_BSTR)
 		{
-			MySetErrorInfo("Invalid argument. BSTR expected.", "UnmanagedIListImpl.MyStringList");
+			MySetErrorInfo(L"Invalid argument. BSTR expected.", L"UnmanagedIListImpl.MyStringList");
 
 			return COR_E_ARGUMENT;
 		}
 
-		USES_CONVERSION;
-
-		string strValue(W2A(V_BSTR(&pRetVal)));
+		wstring strValue((V_BSTR(&pRetVal)));
 		myStringList[index] = strValue;
 
 		return S_OK;
@@ -137,16 +133,14 @@ public:
 		// value must contain a BSTR.
 		if (V_VT(&value) != VT_BSTR)
 		{
-			MySetErrorInfo("Invalid argument. BSTR expected.", "UnmanagedIListImpl.MyStringList");
+			MySetErrorInfo(L"Invalid argument. BSTR expected.", L"UnmanagedIListImpl.MyStringList");
 
 			return COR_E_ARGUMENT;
 		}
 
-		USES_CONVERSION;
-
 		size_t size = myStringList.size();
 
-		string str(W2A(V_BSTR(&value)));
+		wstring str(V_BSTR(&value));
 		myStringList.push_back(str);
 
 		*pRetVal = size;
@@ -163,16 +157,14 @@ public:
 		// value must contain a BSTR.
 		if (V_VT(&value) != VT_BSTR)
 		{
-			MySetErrorInfo("Invalid argument. BSTR expected.", "UnmanagedIListImpl.MyStringList");
+			MySetErrorInfo(L"Invalid argument. BSTR expected.", L"UnmanagedIListImpl.MyStringList");
 
 			return COR_E_ARGUMENT;
 		}
 
-		USES_CONVERSION;
+		wstring strValue(V_BSTR(&value));
 
-		string strValue(W2A(V_BSTR(&value)));
-
-		vector<string>::iterator theIterator = find(myStringList.begin(), myStringList.end(), strValue);
+		vector<wstring>::iterator theIterator = find(myStringList.begin(), myStringList.end(), strValue);
 
 		if (theIterator != myStringList.end())
 		{
@@ -222,14 +214,12 @@ public:
 		// value must contain a BSTR.
 		if (V_VT(&value) != VT_BSTR)
 		{
-			MySetErrorInfo("Invalid argument. BSTR expected.", "UnmanagedIListImpl.MyStringList");
+			MySetErrorInfo(L"Invalid argument. BSTR expected.", L"UnmanagedIListImpl.MyStringList");
 
 			return COR_E_ARGUMENT;
 		}
 
-		USES_CONVERSION;
-
-		string strValue(W2A(V_BSTR(&value)));
+		wstring strValue(V_BSTR(&value));
 
 		int i = 0;
 
@@ -237,11 +227,11 @@ public:
 		// Lambda Expressions in C++
 		// https://docs.microsoft.com/en-us/cpp/cpp/lambda-expressions-in-cpp?view=vs-2019
 		//
-		vector<string>::iterator theIterator = find_if
+		vector<wstring>::iterator theIterator = find_if
 		(
 			myStringList.begin(), 
 			myStringList.end(), 
-			[strValue, &i](string& str)
+			[strValue, &i](wstring& str)
 			{
 				if (str == strValue)
 				{
@@ -273,15 +263,13 @@ public:
 		/*[in]*/ VARIANT value
 	)
 	{
-		USES_CONVERSION;
-
 		if ((index < 0) || (index > (long)(myStringList.size())))
 		{
 			// See :
 			// ArgumentOutOfRangeException Class
 			// https://docs.microsoft.com/en-us/dotnet/api/system.argumentoutofrangeexception?view=netframework-4.8
 			//
-			MySetErrorInfo("The Index is Out of Range", "UnmanagedIListImpl.MyStringList");
+			MySetErrorInfo(L"The Index is Out of Range", L"UnmanagedIListImpl.MyStringList");
 
 			// #include <corerror.h> in order to use COR_E_ARGUMENTOUTOFRANGE.
 			return COR_E_ARGUMENTOUTOFRANGE;
@@ -290,14 +278,14 @@ public:
 		// value must contain a BSTR.
 		if (V_VT(&value) != VT_BSTR)
 		{
-			MySetErrorInfo("Invalid argument. BSTR expected.", "UnmanagedIListImpl.MyStringList");
+			MySetErrorInfo(L"Invalid argument. BSTR expected.", L"UnmanagedIListImpl.MyStringList");
 
 			return COR_E_ARGUMENT;
 		}
 
 		long l = 0;
-		string strValue(W2A(V_BSTR(&value)));
-		vector<string>::iterator theIterator;
+		wstring strValue(V_BSTR(&value));
+		vector<wstring>::iterator theIterator;
 
 		for
 		(
@@ -357,14 +345,14 @@ public:
 			// ArgumentOutOfRangeException Class
 			// https://docs.microsoft.com/en-us/dotnet/api/system.argumentoutofrangeexception?view=netframework-4.8
 			//
-			MySetErrorInfo("The Index is Out of Range", "UnmanagedIListImpl.MyStringList");
+			MySetErrorInfo(L"The Index is Out of Range", L"UnmanagedIListImpl.MyStringList");
 
 			// #include <corerror.h> in order to use COR_E_ARGUMENTOUTOFRANGE.
 			return COR_E_ARGUMENTOUTOFRANGE;
 		}
 
 		long l = 0;
-		vector<string>::iterator theIterator;
+		vector<wstring>::iterator theIterator;
 
 		for
 		(
@@ -403,8 +391,6 @@ public:
 		/*[in]*/ long index
 	)
 	{
-		USES_CONVERSION;
-
 		IDispatchPtr pDispatch = dynamic_cast<IDispatch*>(Array);
 		OLECHAR * szMember = L"SetValue";
 		DISPID dispid = 0;
@@ -437,7 +423,7 @@ public:
 				VariantInit(&(vargParams[1]));
 
 				V_VT(&varObject) = VT_BSTR;
-				V_BSTR(&varObject) = ::SysAllocString(A2W(myStringList[i].c_str()));
+				V_BSTR(&varObject) = ::SysAllocString(myStringList[i].c_str());
 
 				// The last parameter for the method to call (e.g. SetValue())
 				// must be "pushed in" first.
@@ -481,7 +467,7 @@ public:
 					// ArgumentException Class
 					// https://docs.microsoft.com/en-us/dotnet/api/system.argumentexception?view=netframework-4.8
 					//
-					MySetErrorInfo(W2A(excepinfo.bstrSource), W2A(excepinfo.bstrSource));
+					MySetErrorInfo(excepinfo.bstrSource, excepinfo.bstrSource);
 
 					// Note that it is the Invoke() caller's responsibility to free the BSTR
 					// members of the EXCEPINFO structure. 
@@ -558,8 +544,6 @@ public:
 		/* [out] */ ULONG *pCeltFetched
 	)
 	{
-		USES_CONVERSION;
-
 		// Initialize receiver.
 		*pCeltFetched = 0;
 
@@ -581,7 +565,7 @@ public:
 
 			VariantInit(&(rgVar[i]));
 			V_VT(&(rgVar[i])) = VT_BSTR;
-			V_BSTR(&(rgVar[i])) = ::SysAllocString(A2W(myStringList[m_iElementsFetched + i].c_str()));
+			V_BSTR(&(rgVar[i])) = ::SysAllocString(myStringList[m_iElementsFetched + i].c_str());
 		}
 
 		*pCeltFetched = i;
@@ -642,7 +626,7 @@ public:
 
 
 private:
-	vector<string> myStringList;
+	vector<wstring> myStringList;
 	ULONG m_iElementsFetched;
 
 };

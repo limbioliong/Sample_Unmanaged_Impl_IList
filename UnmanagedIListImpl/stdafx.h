@@ -31,10 +31,11 @@
 using namespace std;
 
 // We have #import the types declared in mscorlib. 
-#import "mscorlib.tlb" raw_interfaces_only  rename("_Module", "___Module") rename("ReportEvent", "_ReportEvent") rename("IList", "_IList") rename("_Array", "__Array") rename("ICollection", "_ICollection") rename("IEnumerable", "_IEnumerable")
+#import "mscorlib.tlb" raw_interfaces_only  rename("_Module", "___Module") rename("ReportEvent", "_ReportEvent") \
+rename("IList", "_IList") rename("_Array", "__Array") rename("ICollection", "_ICollection") rename("IEnumerable", "_IEnumerable")
 
 using namespace mscorlib;
 
 #include <corerror.h>
 
-void MySetErrorInfo(LPCTSTR lpszDescription, LPCTSTR lpszSource);
+void MySetErrorInfo(LPCWSTR lpszDescription, LPCWSTR lpszSource);

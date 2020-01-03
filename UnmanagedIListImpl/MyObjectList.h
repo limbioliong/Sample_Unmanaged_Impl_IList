@@ -78,19 +78,14 @@ public:
 			// ArgumentOutOfRangeException Class
 			// https://docs.microsoft.com/en-us/dotnet/api/system.argumentoutofrangeexception?view=netframework-4.8
 			//
-			MySetErrorInfo("The Index is Out of Range", "UnmanagedIListImpl.MyObjectList");
+			MySetErrorInfo(L"The Index is Out of Range", L"UnmanagedIListImpl.MyObjectList");
 
 			// #include <corerror.h> in order to use COR_E_ARGUMENTOUTOFRANGE.
 			return COR_E_ARGUMENTOUTOFRANGE;
 		}
 
-		USES_CONVERSION;
-
 		VariantInit(pRetVal);
-
-		VARIANT& varSource = myVarList[index];
-
-		VariantCopy(pRetVal, &varSource);
+		VariantCopy(pRetVal, &(myVarList[index]));
 
 		return S_OK;
 	}
@@ -98,7 +93,7 @@ public:
 	virtual HRESULT __stdcall putref_Item
 	(
 		/*[in]*/ long index,
-		/*[in]*/ VARIANT pRetVal
+		/*[in]*/ VARIANT value
 	)
 	{
 		if ((index < 0) || (index >= (long)(myVarList.size())))
@@ -107,13 +102,13 @@ public:
 			// ArgumentOutOfRangeException Class
 			// https://docs.microsoft.com/en-us/dotnet/api/system.argumentoutofrangeexception?view=netframework-4.8
 			//
-			MySetErrorInfo("The Index is Out of Range", "UnmanagedIListImpl.MyObjectList");
+			MySetErrorInfo(L"The Index is Out of Range", L"UnmanagedIListImpl.MyObjectList");
 
 			// #include <corerror.h> in order to use COR_E_ARGUMENTOUTOFRANGE.
 			return COR_E_ARGUMENTOUTOFRANGE;
 		}
 
-		myVarList[index] = pRetVal;
+		myVarList[index] = value;
 
 		return S_OK;
 	}
@@ -124,8 +119,6 @@ public:
 		/*[out,retval]*/ long * pRetVal
 	)
 	{
-		USES_CONVERSION;
-
 		size_t size = myVarList.size();
 
 		myVarList.push_back(value);
@@ -141,8 +134,6 @@ public:
 		/*[out,retval]*/ VARIANT_BOOL * pRetVal
 	)
 	{
-		USES_CONVERSION;
-
 		vector<_variant_t>::iterator theIterator = find(myVarList.begin(), myVarList.end(), value);
 
 		if (theIterator != myVarList.end())
@@ -190,8 +181,6 @@ public:
 		/*[out,retval]*/ long * pRetVal
 	)
 	{
-		USES_CONVERSION;
-
 		_variant_t varValue = value;
 
 		int i = 0;
@@ -236,8 +225,6 @@ public:
 		/*[in]*/ VARIANT value
 	)
 	{
-		USES_CONVERSION;
-
 		// Note the MSDN documentation for IList::Insert() states that :
 		// If index equals the number of items in the IList, then value is appended to the end.
 		// Hence "index" can be a value equal to myVarList.size().
@@ -247,7 +234,7 @@ public:
 			// ArgumentOutOfRangeException Class
 			// https://docs.microsoft.com/en-us/dotnet/api/system.argumentoutofrangeexception?view=netframework-4.8
 			//
-			MySetErrorInfo("The Index is Out of Range", "UnmanagedIListImpl.MyObjectList");
+			MySetErrorInfo(L"The Index is Out of Range", L"UnmanagedIListImpl.MyObjectList");
 
 			// #include <corerror.h> in order to use COR_E_ARGUMENTOUTOFRANGE.
 			return COR_E_ARGUMENTOUTOFRANGE;
@@ -314,7 +301,7 @@ public:
 			// ArgumentOutOfRangeException Class
 			// https://docs.microsoft.com/en-us/dotnet/api/system.argumentoutofrangeexception?view=netframework-4.8
 			//
-			MySetErrorInfo("The Index is Out of Range", "UnmanagedIListImpl.MyObjectList");
+			MySetErrorInfo(L"The Index is Out of Range", L"UnmanagedIListImpl.MyObjectList");
 
 			// #include <corerror.h> in order to use COR_E_ARGUMENTOUTOFRANGE.
 			return COR_E_ARGUMENTOUTOFRANGE;
@@ -360,8 +347,6 @@ public:
 		/*[in]*/ long index
 	)
 	{
-		USES_CONVERSION;
-
 		IDispatchPtr pDispatch = dynamic_cast<IDispatch*>(Array);
 		OLECHAR * szMember = L"SetValue";
 		DISPID dispid = 0;
@@ -436,7 +421,7 @@ public:
 					// ArgumentException Class
 					// https://docs.microsoft.com/en-us/dotnet/api/system.argumentexception?view=netframework-4.8
 					//
-					MySetErrorInfo(W2A(excepinfo.bstrSource), W2A(excepinfo.bstrSource));
+					MySetErrorInfo(excepinfo.bstrSource, excepinfo.bstrSource);
 
 					// Note that it is the Invoke() caller's responsibility to free the BSTR
 					// members of the EXCEPINFO structure. 
@@ -525,8 +510,6 @@ public:
 		/* [out] */ ULONG *pCeltFetched
 	)
 	{
-		USES_CONVERSION;
-
 		// Initialize receiver.
 		*pCeltFetched = 0;
 
